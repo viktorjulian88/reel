@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Borderless — Ad Bible</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0f1824;
+  --card:#1f2d42;
+  --card2:#263850;
+  --gold:#f59e0b;
+  --gold2:#d97706;
+  --red:#ef4444;
+  --green:#22c55e;
+  --blue:#60a5fa;
+  --purple:#a78bfa;
+  --w:#ffffff;
+  --w80:rgba(255,255,255,0.8);
+  --w60:rgba(255,255,255,0.6);
+  --w40:rgba(255,255,255,0.4);
+  --w10:rgba(255,255,255,0.06);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--navy);
+  color:var(--w);
+  font-family:'DM Sans',sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── TOP BAR ── */
+.topbar{height:3px;background:linear-gradient(90deg,transparent,var(--gold),var(--gold2),transparent);}
+
+/* ── HEADER ── */
+header{
+  padding:env(safe-area-inset-top, 20px) 20px 24px;
+  padding-top:calc(env(safe-area-inset-top, 20px) + 16px);
+  border-bottom:1px solid rgba(255,255,255,0.07);
+}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.12em;}
+.logo span{color:var(--gold);}
+h1{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:0.04em;line-height:1;margin-top:12px;}
+h1 em{color:var(--gold);font-style:normal;}
+.sub{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;color:var(--w40);text-transform:uppercase;margin-top:10px;}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  background:rgba(15,24,36,0.97);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-top:1px solid rgba(255,255,255,0.08);
+  padding:8px 0 calc(env(safe-area-inset-bottom, 0px) + 8px);
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  z-index:200;
+}
+.nb{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:8px 4px;
+  background:none;border:none;
+  color:var(--w40);
+  cursor:pointer;
+  transition:color .15s;
+  font-family:'DM Mono',monospace;
+  font-size:9px;letter-spacing:0.06em;text-transform:uppercase;
+}
+.nb .icon{font-size:20px;line-height:1;}
+.nb.active{color:var(--gold);}
+.nb.active .icon{filter:drop-shadow(0 0 6px rgba(245,158,11,0.5));}
+
+/* ── TABS ── */
+.tab{display:none;padding:24px 18px calc(80px + env(safe-area-inset-bottom, 0px));}
+.tab.active{display:block;}
+
+/* ── SECTION HEADER ── */
+.sh{
+  font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:0.28em;
+  color:var(--gold);text-transform:uppercase;
+  margin:0 0 16px;
+  display:flex;align-items:center;gap:10px;
+}
+.sh::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(245,158,11,0.25),transparent);}
+.section{margin-bottom:40px;}
+
+/* ── PRINCIPLE CARDS ── */
+.pcard{
+  background:var(--card);border-radius:12px;
+  padding:20px;margin-bottom:12px;
+  border-left:3px solid var(--gold);
+}
+.p-num{
+  font-family:'Bebas Neue',sans-serif;font-size:42px;
+  color:var(--gold);opacity:0.1;line-height:1;
+  float:right;margin:-2px -2px 0 0;
+}
+.p-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.18em;color:var(--gold);text-transform:uppercase;margin-bottom:6px;}
+.p-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.04em;margin-bottom:8px;line-height:1.1;}
+.p-body{font-size:14px;color:var(--w60);line-height:1.7;}
+.p-body strong{color:var(--w80);}
+.p-ex{margin-top:12px;background:rgba(245,158,11,0.08);border-left:2px solid var(--gold);padding:10px 12px;border-radius:0 8px 8px 0;font-size:13px;color:var(--w80);font-style:italic;line-height:1.55;}
+.p-ex-l{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.15em;color:var(--gold);text-transform:uppercase;margin-bottom:4px;}
+.p-bad{margin-top:8px;background:rgba(239,68,68,0.06);border-left:2px solid #ef4444;padding:10px 12px;border-radius:0 8px 8px 0;font-size:13px;color:#fca5a5;font-style:italic;line-height:1.55;}
+.p-bad-l{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.15em;color:#f87171;text-transform:uppercase;margin-bottom:4px;}
+
+/* ── GOLDEN RULE ── */
+.golden{
+  background:rgba(245,158,11,0.07);
+  border:1px solid rgba(245,158,11,0.2);
+  border-radius:12px;padding:20px;margin-bottom:24px;
+}
+.golden-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.04em;line-height:1.2;margin-bottom:8px;}
+.golden-title em{color:var(--gold);font-style:normal;}
+.golden-body{font-size:14px;color:var(--w60);line-height:1.7;}
+.golden-body strong{color:var(--w80);}
+
+/* ── TIMING BAR ── */
+.timing{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-bottom:20px;border-radius:8px;overflow:hidden;}
+.tseg{padding:10px 4px;text-align:center;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.06em;text-transform:uppercase;line-height:1.3;}
+.t1{background:rgba(245,158,11,0.25);color:var(--gold);}
+.t2{background:rgba(239,68,68,0.18);color:#f87171;}
+.t3{background:rgba(96,165,250,0.13);color:#93c5fd;}
+.t4{background:rgba(167,139,250,0.13);color:#c4b5fd;}
+.t5{background:rgba(34,197,94,0.13);color:#86efac;}
+
+/* ── DELIVERY CARDS ── */
+.dcard{background:var(--card);border-radius:12px;padding:18px;margin-bottom:10px;}
+.dcard-icon{font-size:26px;margin-bottom:8px;}
+.dcard-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;color:var(--gold);text-transform:uppercase;margin-bottom:6px;}
+.dcard-body{font-size:14px;color:var(--w60);line-height:1.65;}
+.dcard-body strong{color:var(--w80);}
+
+/* ── DO/DONT ── */
+.dodont{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+.do-card{background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.18);border-radius:12px;padding:18px;}
+.dont-card{background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.18);border-radius:12px;padding:18px;}
+.do-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.13em;color:#4ade80;text-transform:uppercase;margin-bottom:10px;}
+.dont-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.13em;color:#f87171;text-transform:uppercase;margin-bottom:10px;}
+.do-card ul,.dont-card ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.do-card ul li,.dont-card ul li{font-size:14px;color:var(--w60);padding-left:18px;position:relative;line-height:1.45;}
+.do-card ul li::before{content:'✓';position:absolute;left:0;color:#4ade80;font-size:12px;}
+.dont-card ul li::before{content:'✕';position:absolute;left:0;color:#f87171;font-size:12px;}
+
+/* ── STEPS ── */
+.step{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:start;background:var(--card);border-radius:12px;padding:16px;margin-bottom:10px;}
+.step-n{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--gold);opacity:0.4;line-height:1;text-align:center;padding-top:2px;}
+.step-title{font-size:15px;font-weight:600;color:var(--w80);margin-bottom:4px;}
+.step-body{font-size:13px;color:var(--w60);line-height:1.6;}
+.step-body strong{color:var(--w80);}
+
+/* ── TWO PATHS GUIDE ── */
+.tp-card{border-radius:12px;padding:18px;margin-bottom:10px;}
+.tp-de{background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.18);}
+.tp-us{background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.18);}
+.tp-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;}
+.tp-label.de{color:#f87171;}
+.tp-label.us{color:#86efac;}
+.tp-body{font-size:14px;color:var(--w60);line-height:1.7;}
+.tp-body strong{color:var(--w80);}
+
+/* ── HOOK CARDS ── */
+.hcard{background:var(--card);border-radius:12px;padding:18px;margin-bottom:10px;border-top:2px solid var(--gold);}
+.hcard-n{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:0.04em;margin-bottom:4px;}
+.hcard-why{font-size:12px;color:var(--w40);margin-bottom:8px;font-style:italic;}
+.hcard-ex{font-size:14px;color:var(--w80);font-style:italic;border-left:2px solid var(--gold);padding-left:10px;line-height:1.55;}
+
+/* ── AD CARDS ── */
+.ad{background:var(--card);border-radius:12px;overflow:hidden;margin-bottom:16px;}
+.ad.gold-l{border-left:3px solid var(--gold);}
+.ad.blue-l{border-left:3px solid var(--blue);}
+.ad.green-l{border-left:3px solid var(--green);}
+.ad.purple-l{border-left:3px solid var(--purple);}
+
+.ad-top{padding:14px 16px 12px;border-bottom:1px solid rgba(255,255,255,0.06);}
+.ad-num{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.16em;color:var(--w40);margin-bottom:6px;}
+.badges{display:flex;gap:5px;flex-wrap:wrap;}
+.b{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.08em;padding:2px 7px;border-radius:4px;text-transform:uppercase;}
+.b-th{background:rgba(245,158,11,0.12);color:var(--gold);border:1px solid rgba(245,158,11,0.25);}
+.b-a{background:rgba(255,255,255,0.05);color:var(--w60);border:1px solid rgba(255,255,255,0.1);}
+.b-t{background:rgba(255,255,255,0.03);color:var(--w40);border:1px solid rgba(255,255,255,0.08);}
+.b-s{background:rgba(34,197,94,0.08);color:#86efac;border:1px solid rgba(34,197,94,0.2);}
+.b-hot{background:rgba(239,68,68,0.1);color:#fca5a5;border:1px solid rgba(239,68,68,0.25);}
+.ht-wrap{margin-top:8px;}
+.ht-l{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.12em;color:var(--w40);text-transform:uppercase;margin-bottom:2px;}
+.ht-v{font-size:13px;font-weight:600;color:var(--w60);}
+
+.ad-body{padding:16px;}
+
+/* Script */
+.bh{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.btag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.16em;color:var(--gold);text-transform:uppercase;}
+.btime{font-family:'DM Mono',monospace;font-size:9px;color:var(--w40);border:1px solid rgba(255,255,255,0.1);padding:1px 6px;border-radius:4px;}
+.bpurp{font-size:11px;color:var(--w40);font-style:italic;width:100%;}
+
+.hook{
+  font-size:18px;font-weight:700;color:var(--w);line-height:1.45;
+  background:rgba(245,158,11,0.09);border-left:3px solid var(--gold);
+  padding:14px 16px;border-radius:0 8px 8px 0;
+}
+.body-t{font-size:14px;color:var(--w80);line-height:1.85;}
+.cta{
+  font-size:15px;font-weight:700;color:var(--gold);
+  background:rgba(245,158,11,0.07);border-left:3px solid var(--gold);
+  padding:14px 16px;border-radius:0 8px 8px 0;
+  line-height:1.5;
+}
+.ol{background:rgba(245,158,11,0.15);border-radius:3px;padding:1px 5px;}
+
+/* VS blocks — stacked on mobile */
+.vs-block{margin:10px 0;display:flex;flex-direction:column;gap:8px;}
+.vs-de{background:rgba(239,68,68,0.07);border-left:3px solid #ef4444;padding:12px 14px;border-radius:0 8px 8px 0;}
+.vs-us{background:rgba(34,197,94,0.06);border-left:3px solid #22c55e;padding:12px 14px;border-radius:0 8px 8px 0;}
+.vs-who{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:5px;}
+.vs-who.de{color:#f87171;}
+.vs-who.us{color:#86efac;}
+.vs-t{font-size:14px;line-height:1.7;}
+.vs-t.de{color:#fca5a5;}
+.vs-t.us{color:#86efac;}
+
+/* Notes */
+.notes{margin-top:14px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:12px 14px;}
+.nl{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.18em;color:var(--w40);text-transform:uppercase;margin-bottom:8px;}
+.ni-list{display:flex;flex-direction:column;gap:6px;}
+.ni{font-size:12px;color:var(--w60);padding-left:14px;position:relative;line-height:1.4;}
+.ni::before{content:'↳';position:absolute;left:0;color:var(--w40);font-size:11px;}
+
+hr{border:none;border-top:1px solid rgba(255,255,255,0.07);margin:14px 0;}
+
+/* Info box */
+.info{background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.15);border-radius:10px;padding:14px 16px;margin-bottom:20px;font-size:14px;color:var(--w60);line-height:1.7;}
+.info strong{color:var(--w80);}
+
+/* Pill row */
+.pill-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;}
+.pill{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;color:var(--w40);text-transform:uppercase;border:1px solid rgba(255,255,255,0.1);padding:4px 10px;border-radius:20px;}
+.pill.g{color:var(--gold);border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.06);}
+
+/* Checklist */
+.cl-card{background:var(--card);border-radius:12px;padding:18px;margin-bottom:10px;}
+.cl-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;color:var(--gold);text-transform:uppercase;margin-bottom:12px;}
+.cl-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.cl-list li{font-size:14px;color:var(--w60);padding-left:22px;position:relative;line-height:1.45;}
+.cl-list li::before{content:'☐';position:absolute;left:0;color:var(--gold);}
+
+/* 3-col grid for small cards */
+.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.mini-card{background:var(--card);border-radius:10px;padding:16px;border-top:2px solid var(--gold);}
+.mini-tag{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.12em;color:var(--gold);text-transform:uppercase;margin-bottom:6px;}
+.mini-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:0.04em;margin-bottom:6px;}
+.mini-body{font-size:12px;color:var(--w60);line-height:1.55;}
+
+/* Launch box */
+.launch-box{background:var(--card);border-radius:12px;padding:20px;margin-top:16px;}
+.launch-col{margin-bottom:16px;}
+.launch-col:last-child{margin-bottom:0;}
+.launch-title{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.15em;color:var(--gold);text-transform:uppercase;margin-bottom:8px;}
+.launch-body{font-size:13px;color:var(--w60);line-height:1.65;}
+.launch-body strong{color:var(--w80);}
+</style>
+</head>
+<body>
+<div class="topbar"></div>
+
+<header>
+  <div class="logo">BORDER<span>LESS</span></div>
+  <h1>Ad Production<br><em>Bible</em></h1>
+  <div class="pill-row">
+    <span class="pill g">Morgen aufnehmen</span>
+    <span class="pill g">Freitag live</span>
+    <span class="pill">20+ Skripte</span>
+  </div>
+</header>
+
+
+<!-- ═══════════════════ TAB: PRINZIPIEN ═══════════════════ -->
+<div class="tab active" id="t-prinzip">
+
+  <div class="golden">
+    <div class="golden-title">Die Ad verkauft nicht das Produkt.<br>Sie verkauft den <em>Klick.</em></div>
+    <div class="golden-body">Kein Preis. Keine Features. Kein Produktname. Nur die Neugier auf das was dahinter ist. <strong>Der Funnel schließt den Loop.</strong></div>
+  </div>
+
+  <div class="timing">
+    <div class="tseg t1">Hook<br>0–3s</div>
+    <div class="tseg t2">Pain<br>3–15s</div>
+    <div class="tseg t3">Mechanism<br>15–40s</div>
+    <div class="tseg t4">Open Loop<br>40–55s</div>
+    <div class="tseg t5">CTA<br>55–65s</div>
+  </div>
+
+  <div class="section">
+    <div class="sh">Die 8 Profi-Prinzipien</div>
+
+    <div class="pcard">
+      <div class="p-num">1</div>
+      <div class="p-tag">Prinzip 01</div>
+      <div class="p-title">Hook — die ersten 3 Sekunden entscheiden</div>
+      <div class="p-body">70% der Menschen entscheiden in Sekunde 1–3 ob sie weiterschauen. Dein Hook muss <strong>Neugier, Schmerz oder Schock</strong> auslösen. Alles andere verliert.</div>
+      <div class="p-ex"><div class="p-ex-l">✓ Funktioniert</div>„Ich zahle fast keine Steuern mehr — vollkommen legal."</div>
+      <div class="p-bad"><div class="p-bad-l">✕ Funktioniert nicht</div>„Heute möchte ich euch etwas über US-LLCs erzählen..."</div>
+    </div>
+
+    <div class="pcard">
+      <div class="p-num">2</div>
+      <div class="p-tag">Prinzip 02</div>
+      <div class="p-title">Sprich einen — nicht alle</div>
+      <div class="p-body">Je spezifischer der Schmerz, desto größer die Resonanz. <strong>„Du bist Digital Nomad, nicht mehr in DE gemeldet"</strong> wirkt zehnmal stärker als „Du verdienst online Geld".</div>
+      <div class="p-ex"><div class="p-ex-l">✓ Spezifisch</div>„Wenn du mehr als 10.000 Euro im Monat verdienst und dein Business noch in Deutschland ist..."</div>
+    </div>
+
+    <div class="pcard">
+      <div class="p-num">3</div>
+      <div class="p-tag">Prinzip 03</div>
+      <div class="p-title">Zeige das Ergebnis — erkläre nicht den Weg</div>
+      <div class="p-body">Die Ad ist nicht dazu da, zu informieren — sie erzeugt <strong>Verlangen.</strong> Zeige was möglich ist. Andeutungsweise. Der Funnel erklärt das Wie.</div>
+      <div class="p-ex"><div class="p-ex-l">✓ Ergebnis</div>„Ich fliege Business Class und zahle dafür fast nichts."</div>
+      <div class="p-bad"><div class="p-bad-l">✕ Zu viel Info</div>„Mit einer ITIN und einer EIN kannst du eine US LLC gründen und dann..."</div>
+    </div>
+
+    <div class="pcard">
+      <div class="p-num">4</div>
+      <div class="p-tag">Prinzip 04</div>
+      <div class="p-title">Open Loop — erzwinge den Klick</div>
+      <div class="p-body">Das Gehirn hasst offene Fragen. Hinterlasse am Ende eine <strong>unvollendete Geschichte</strong> die er nur durch Klicken auflösen kann.</div>
+      <div class="p-ex"><div class="p-ex-l">✓ Open Loop</div>„Was ich damals gemacht habe und warum die meisten Europäer das nie machen — steht im Link."</div>
+      <div class="p-bad"><div class="p-bad-l">✕ Schwacher CTA</div>„Klick auf den Link in der Bio für mehr Infos."</div>
+    </div>
+
+    <div class="pcard">
+      <div class="p-num">5</div>
+      <div class="p-tag">Prinzip 05</div>
+      <div class="p-title">Skepsis vorwegnehmen</div>
+      <div class="p-body">Wenn du etwas Überraschendes sagst, denkt er sofort: <em>„Klingt illegal".</em> Wenn du das sagst bevor er es denkt, gewinnst du sein Vertrauen.</div>
+      <div class="p-ex"><div class="p-ex-l">✓ So machen</div>„Das ist keine Offshore-Konstruktion — es ist eine Unternehmensform die in Amerika für jeden zugänglich ist."</div>
+    </div>
+
+    <div class="pcard">
+      <div class="p-num">6</div>
+      <div class="p-tag">Prinzip 06</div>
+      <div class="p-title">Kontrast schlägt Beschreibung</div>
+      <div class="p-body">Zwei Bilder nebeneinander sind stärker als jede Erklärung. <strong>EU/USA. Debit/Amex. Langsam/schnell.</strong> Das Two-Paths-Format ist das stärkste Ad-Format das existiert.</div>
+      <div class="p-ex"><div class="p-ex-l">✓ Kontrast</div>„Einer verliert Geld. Der andere sammelt Business-Class-Flüge. Beide zahlen ihre Meta Ads."</div>
+    </div>
+
+    <div class="pcard">
+      <div class="p-num">7</div>
+      <div class="p-tag">Prinzip 07</div>
+      <div class="p-title">Spezifität = Glaubwürdigkeit</div>
+      <div class="p-body">Vage Behauptungen werden ignoriert. Spezifische Zahlen erzeugen Vertrauen — auch wenn der Zuschauer sie nicht überprüfen kann.</div>
+      <div class="p-ex"><div class="p-ex-l">✓ Spezifisch</div>„100.000 Punkte Willkommensbonus — das entspricht mehreren Business-Class-Flügen."</div>
+      <div class="p-bad"><div class="p-bad-l">✕ Vage</div>„Du bekommst viele Punkte und kannst günstiger fliegen."</div>
+    </div>
+
+    <div class="pcard">
+      <div class="p-num">8</div>
+      <div class="p-tag">Prinzip 08</div>
+      <div class="p-title">Du bist der Beweis — nicht der Verkäufer</div>
+      <div class="p-body">Du lebst was du verkaufst. Du pendelst zwischen drei Kontinenten. Du fliegst Business Class. <strong>Das ist deine Credibility.</strong> Nicht dein Produkt — dein Leben.</div>
+      <div class="p-ex"><div class="p-ex-l">✓ Du bist der Beweis</div>„Ich mache das seit Jahren — von Medellín, von Bali, von Barcelona. Das ist nicht Theorie."</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════ TAB: DELIVERY ═══════════════════ -->
+<div class="tab" id="t-delivery">
+
+  <div class="section">
+    <div class="sh">Wie du vor der Kamera wirkst</div>
+
+    <div class="dcard">
+      <div class="dcard-icon">👁</div>
+      <div class="dcard-title">Eye Contact</div>
+      <div class="dcard-body">Direkt in die Linse — nicht daneben. Die Kamera ist <strong>dein bester Freund dem du etwas Wichtiges erklärst.</strong> Nicht ein Publikum das du überzeugst.</div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-icon">🗣</div>
+      <div class="dcard-title">Tempo & Pausen</div>
+      <div class="dcard-body">Langsamer als du denkst. Nach dem Hook: <strong>eine kurze Pause.</strong> „Ich zahle fast keine Steuern mehr. [Pause] Vollkommen legal." Die Pause macht den Satz stärker als jedes Wort.</div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-icon">⚡</div>
+      <div class="dcard-title">Energie-Level</div>
+      <div class="dcard-body">Nicht aufgeregt wie ein Influencer. Nicht trocken wie ein Professor. <strong>Ruhig-überzeugend</strong> — wie jemand der die Antwort kennt und sie teilt.</div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-icon">🎭</div>
+      <div class="dcard-title">Keine Perfektion</div>
+      <div class="dcard-body">Natürliche Versprecher und echte Formulierungen wirken authentischer als auswendig gelernter Text. <strong>Perfekte Ads fühlen sich nach Werbung an.</strong> Echte Ads nach einem Gespräch.</div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-icon">🤲</div>
+      <div class="dcard-title">Hände & Körper</div>
+      <div class="dcard-body">Ruhig im Bild. Bei Vergleichen <strong>links/rechts zeigen</strong> (EU links, US rechts). Bei Listen Finger zählen. Das hält die Aufmerksamkeit.</div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-icon">🔁</div>
+      <div class="dcard-title">Takes</div>
+      <div class="dcard-body">Take 1 = Aufwärmen. Take 2 = gut. <strong>Take 3 = meistens der beste.</strong> Mindestens 3 Takes pro Ad. Hook-Satz separat 5-mal aufnehmen.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sh">Do's & Don'ts</div>
+    <div class="dodont">
+      <div class="do-card">
+        <div class="do-title">✓ So machst du es</div>
+        <ul>
+          <li>Hook mit kurzem Innehalten — wirken lassen</li>
+          <li>Nach starken Aussagen pausieren</li>
+          <li>Direkt in die Linse schauen</li>
+          <li>Skript ist Leitfaden — kein Drehbuch</li>
+          <li>„Vollkommen legal" und Trust-Builder betonen</li>
+          <li>Two Paths: leicht andere Körperhaltung DE/US</li>
+          <li>CTA ruhig und einladend — kein Druck</li>
+          <li>Mindestens 3 Takes — natürlichsten wählen</li>
+        </ul>
+      </div>
+      <div class="dont-card">
+        <div class="dont-title">✕ Das vermeiden</div>
+        <ul>
+          <li>Vom Teleprompter ablesen mit starrem Blick</li>
+          <li>Zu schnell sprechen</li>
+          <li>Beim Hook lächeln</li>
+          <li>Werbeton verwenden</li>
+          <li>Zu viele Infos auf einmal</li>
+          <li>Den Preis nennen</li>
+          <li>Nur einen Take aufnehmen</li>
+          <li>Nervös zappeln</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sh">Aufnahme-Ablauf für morgen</div>
+
+    <div class="step"><div class="step-n">1</div><div><div class="step-title">Warm-up — 10 Min</div><div class="step-body">Alle Hook-Sätze laut lesen. Kamera-Test. Wasser bereit. Noch keine Aufnahmen.</div></div></div>
+    <div class="step"><div class="step-n">2</div><div><div class="step-title">Hook-Only Takes</div><div class="step-body">Alle Hooks 4–5 Mal aufnehmen. Verschiedene Energien und Pausen. Besten Take markieren.</div></div></div>
+    <div class="step"><div class="step-n">3</div><div><div class="step-title">Two Paths Lang (20 Min)</div><div class="step-body">Haupt-Ad zuerst. 3 vollständige Takes. Nach Take 2 kurze Pause.</div></div></div>
+    <div class="step"><div class="step-n">4</div><div><div class="step-title">Two Paths Kurz × 5</div><div class="step-body">Je 2 Takes reichen. Kurze Pausen dazwischen.</div></div></div>
+    <div class="step"><div class="step-n">5</div><div><div class="step-title">Cards & Credit × 4</div><div class="step-body">Cards 03 (Immobilien) zuerst — stärkster Hook, braucht frische Energie.</div></div></div>
+    <div class="step"><div class="step-n">6</div><div><div class="step-title">Setup & Nomad × 4</div><div class="step-body">Setup 01 (HK/Dubai/USA) zuerst — analytisch, gut wenn Energie ruhiger ist.</div></div></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════ TAB: TWO PATHS ═══════════════════ -->
+<div class="tab" id="t-twopaths">
+
+  <div class="section">
+    <div class="sh">Warum Two Paths konvertiert</div>
+    <div class="pcard">
+      <div class="p-tag">Das Psychologie-Prinzip</div>
+      <div class="p-title">Du zeigst Optionen. Menschen wählen.</div>
+      <div class="p-body">Wenn du zwei Wege zeigst, entscheidet der Zuschauer unbewusst auf welcher Seite er steht — und auf welcher er stehen will.<br><br>Er denkt nicht: <em>„Der verkauft mir was."</em> Er denkt: <em>„Das bin ich. Das will ich nicht mehr sein."</em> Und dann klickt er selbst.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sh">Wie du es aufnimmst</div>
+    <div class="info">Du stehst die ganze Zeit vor der Kamera. Kein Schnitt zwischen Personen. Du bist der <strong>Erzähler</strong> — nicht die Figuren.</div>
+
+    <div class="tp-card tp-de">
+      <div class="tp-label de">🇩🇪 Wenn du über den Deutschen sprichst</div>
+      <div class="tp-body">
+        <strong>Körper:</strong> Leicht nach links, Schultern minimal nach vorne, Energie etwas flacher.<br><br>
+        <strong>Ton:</strong> Ruhig-faktisch. Keine Schadenfreude. Er ist nicht blöd — er weiß es nicht.<br><br>
+        <strong>Tempo:</strong> Normal. Nicht langsamer — das wirkt herablassend.
+      </div>
+    </div>
+
+    <div class="tp-card tp-us">
+      <div class="tp-label us">🇺🇸 Wenn du über den US-Unternehmer sprichst</div>
+      <div class="tp-body">
+        <strong>Körper:</strong> Leicht nach rechts, aufrechter, minimal mehr Energie.<br><br>
+        <strong>Ton:</strong> Leicht anerkennend — du beschreibst etwas das du selbst kennst.<br><br>
+        <strong>Tempo:</strong> Etwas lebendiger — die Energie des Aufbaus zeigen.
+      </div>
+    </div>
+
+    <div class="info" style="margin-top:10px;">
+      <strong>Wichtig:</strong> Diese Unterschiede sind <em>minimal</em> — 10–15 Grad Rotation. Zu viel wirkt theatralisch. Der Zuschauer soll es <em>spüren</em>, nicht sehen.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sh">Die 3 Strukturen</div>
+    <div class="mini-grid">
+      <div class="mini-card">
+        <div class="mini-tag">Struktur A · Lang</div>
+        <div class="mini-title">Zeitstrahl</div>
+        <div class="mini-body">Monat 1→3→6→12. Stärkste Wirkung. 80–100 Sek. Die Haupt-Ad.</div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-tag">Struktur B · Kurz</div>
+        <div class="mini-title">Ein Moment</div>
+        <div class="mini-body">Einer Vergleichs-Moment. 40–55 Sek. Ideal für A/B-Test.</div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-tag">Struktur C</div>
+        <div class="mini-title">Direkte Frage</div>
+        <div class="mini-body">„Welcher bist du?" 30–40 Sek. Dark Ad / Retargeting.</div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-tag">Der Bogen</div>
+        <div class="mini-title">6 Schritte</div>
+        <div class="mini-body">Neugier → Identifikation → Verlangen → Schmerz Max → Brücke → Loop öffnen.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sh">Der emotionale Bogen</div>
+    <div class="step"><div class="step-n">1</div><div><div class="step-title">Neugier wecken</div><div class="step-body">„Zwei Unternehmer. Gleicher Start." — Er fragt sich sofort: Was ist der Unterschied?</div></div></div>
+    <div class="step"><div class="step-n">2</div><div><div class="step-title">Identifikation aufbauen</div><div class="step-body">Er erkennt sich im deutschen Unternehmer. <strong>„Das bin ich."</strong></div></div></div>
+    <div class="step"><div class="step-n">3</div><div><div class="step-title">Verlangen erzeugen</div><div class="step-body">Du zeigst was möglich ist. <strong>„Das will ich sein."</strong></div></div></div>
+    <div class="step"><div class="step-n">4</div><div><div class="step-title">Schmerz maximieren</div><div class="step-body">Monat 12: Der Abstand ist maximal. Er will nicht der erste sein.</div></div></div>
+    <div class="step"><div class="step-n">5</div><div><div class="step-title">Brücke bauen</div><div class="step-body">„Er lebt in Europa. Er ist kein Amerikaner." → <strong>„Wenn er das kann, kann ich das auch."</strong></div></div></div>
+    <div class="step"><div class="step-n">6</div><div><div class="step-title">Loop öffnen</div><div class="step-body">Keine Antwort geben. Nur die Frage stellen. Der Klick ist die Antwort.</div></div></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════ TAB: SKRIPTE ═══════════════════ -->
+<div class="tab" id="t-skripte">
+
+  <!-- TWO PATHS LANG -->
+  <div class="section">
+    <div class="sh">Two Paths — Lang (Haupt-Ad)</div>
+    <div class="ad gold-l">
+      <div class="ad-top">
+        <div class="ad-num">TWO PATHS · LANG</div>
+        <div class="badges"><span class="b b-th">Talking Head</span><span class="b b-t">85–100 Sek</span><span class="b b-s">Haupt-Ad</span></div>
+        <div class="ht-wrap"><div class="ht-l">Struktur</div><div class="ht-v">Zeitstrahl Monat 1/3/6/12</div></div>
+      </div>
+      <div class="ad-body">
+        <div class="bh"><span class="btag">Hook</span><span class="btime">0–4 Sek</span></div>
+        <div class="hook">Zwei Unternehmer starten gleichzeitig ein Online-Business. Gleicher Umsatz. Gleicher Einsatz. Nach 12 Monaten leben sie in komplett verschiedenen Welten.</div>
+        <hr>
+        <div class="bh"><span class="btag">Setup</span><span class="btime">4–12 Sek</span></div>
+        <div class="body-t">Der einzige Unterschied: Einer hat sein Business in Deutschland angemeldet. Der andere hat eine US-Unternehmensstruktur aufgesetzt — als Europäer, ohne in Amerika zu leben. Schau was nach 12 Monaten passiert ist.</div>
+        <hr>
+        <div class="bh"><span class="btag">Monat 1 — Bankzugang</span><span class="btime">12–28 Sek</span></div>
+        <div class="vs-block">
+          <div class="vs-de"><div class="vs-who de">🇩🇪 Monat 1</div><div class="vs-t de">Er geht zur Bank. Bekommt ein Konto. Bekommt eine Debitkarte. Keine Kreditkarte — er soll wiederkommen wenn er zwei Jahre Steuerbescheide hat.</div></div>
+          <div class="vs-us"><div class="vs-who us">🇺🇸 Monat 1</div><div class="vs-t us">Er eröffnet sein US-Businesskonto online. Beantragt die erste Kreditkarte — 100.000 Punkte Willkommensbonus. Credit Score beginnt ab Tag eins aufzubauen.</div></div>
+        </div>
+        <hr>
+        <div class="bh"><span class="btag">Monat 3 — Punkte vs. Nichts</span><span class="btime">28–44 Sek</span></div>
+        <div class="vs-block">
+          <div class="vs-de"><div class="vs-who de">🇩🇪 Monat 3</div><div class="vs-t de">Er zahlt Meta Ads, Software, Tools mit der Debitkarte. Geld weg. Kein Cashback, keine Punkte, keine Prämien. Jeder Euro verschwindet einfach.</div></div>
+          <div class="vs-us"><div class="vs-who us">🇺🇸 Monat 3</div><div class="vs-t us">Er zahlt dieselben Ausgaben mit der Amex Business Platinum. Für jeden Euro Punkte. Nach drei Monaten: genug für einen Langstreckenflug Business Class.</div></div>
+        </div>
+        <hr>
+        <div class="bh"><span class="btag">Monat 6 — Kredit & Steuern</span><span class="btime">44–62 Sek</span></div>
+        <div class="vs-block">
+          <div class="vs-de"><div class="vs-who de">🇩🇪 Monat 6</div><div class="vs-t de">Steuervorauszahlung. Ein erheblicher Teil seines Gewinns ist weg. Er fragt die Bank nach Kredit — abgelehnt. Kein Kredit ohne Kredithistorie. Er finanziert alles langsam aus dem Cashflow.</div></div>
+          <div class="vs-us"><div class="vs-who us">🇺🇸 Monat 6</div><div class="vs-t us">Credit Score ist solide. Er beantragt eine zweite Karte — sechsstelliges Kreditlimit. Er finanziert Werbung vor ohne sein Konto zu belasten. Skaliert mit Bankgeld, nicht mit seinem eigenen.</div></div>
+        </div>
+        <hr>
+        <div class="bh"><span class="btag">Monat 12 — Das Ergebnis</span><span class="btime">62–80 Sek</span><span class="bpurp">— langsamer sprechen, mehr Gewicht</span></div>
+        <div class="vs-block">
+          <div class="vs-de"><div class="vs-who de">🇩🇪 Monat 12</div><div class="vs-t de">Ein Jahr gearbeitet. Steuern gezahlt. Keine Kredithistorie aufgebaut. Kein Kredit bekommen. Keine einzige Prämie gesammelt. Wächst langsam — aus dem was nach Steuern übrig bleibt. Keine Bank gibt ihm Kapital.</div></div>
+          <div class="vs-us"><div class="vs-who us">🇺🇸 Monat 12</div><div class="vs-t us">Solider US-Credit Score. Mehrere Kreditkarten — zusammen sechsstelliges Limit. Business Class geflogen ohne dafür zu zahlen. Weniger Steuern. Stärker gewachsen. Mit demselben Einsatz.</div></div>
+        </div>
+        <hr>
+        <div class="bh"><span class="btag">Reveal</span><span class="btime">80–90 Sek</span></div>
+        <div class="body-t">Der zweite Unternehmer hat bis heute keinen Fuß in die USA gesetzt. Er lebt in Europa. Er ist kein Amerikaner. Er hat einfach früh verstanden dass das US-System für Unternehmer zugänglich ist.</div>
+        <hr>
+        <div class="bh"><span class="btag">Open Loop + CTA</span><span class="btime">90–100 Sek</span></div>
+        <div class="cta"><span class="ol">Welcher dieser Unternehmer bist du gerade — und welcher willst du in 12 Monaten sein?</span> Ich habe aufgeschrieben was du dafür brauchst. Link in der Bio.</div>
+        <div class="notes"><div class="nl">Director's Notes</div><div class="ni-list">
+          <div class="ni">Hook ernst und direkt — kein Lächeln</div>
+          <div class="ni">Monat-12-Block langsamer — das ist der Höhepunkt</div>
+          <div class="ni">„Kein Fuß in die USA gesetzt" klar betonen</div>
+          <div class="ni">CTA als echte Frage — nachdenklich, nicht verkaufend</div>
+          <div class="ni">DE-Teil: flachere Energie · US-Teil: aufrechter</div>
+          <div class="ni">Mind. 3 vollst. Takes · Hook separat 5× aufnehmen</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TWO PATHS KURZ -->
+  <div class="section">
+    <div class="sh">Two Paths — Kurz (5 Versionen)</div>
+
+    <div class="ad gold-l">
+      <div class="ad-top"><div class="ad-num">TWO PATHS KURZ 01</div><div class="badges"><span class="b b-th">Talking Head</span><span class="b b-a">Debit vs. Amex</span><span class="b b-t">40–50 Sek</span></div></div>
+      <div class="ad-body">
+        <div class="bh"><span class="btag">Hook</span><span class="btime">0–3 Sek</span></div>
+        <div class="hook">Zwei Unternehmer zahlen ihre Meta Ads. Einer verliert Geld. Der andere sammelt damit Business-Class-Flüge.</div>
+        <hr>
+        <div class="bh"><span class="btag">Vergleich</span><span class="btime">3–32 Sek</span></div>
+        <div class="vs-block">
+          <div class="vs-de"><div class="vs-who de">🇩🇪 Deutschland</div><div class="vs-t de">Debitkarte. Das Geld ist weg. Kein Cashback. Keine Punkte. 12 Monate Ausgaben — und dafür nichts zurückbekommen außer Umsatz.</div></div>
+          <div class="vs-us"><div class="vs-who us">🇺🇸 US-Struktur</div><div class="vs-t us">Amex Business Platinum. Für jeden Euro Punkte. Dieselben Ausgaben. Aber nach 6 Monaten: genug für einen Langstreckenflug — Business Class. Gratis.</div></div>
+        </div>
+        <div class="body-t" style="margin-top:10px;">Der Unterschied ist nicht wie viel er ausgibt. Der Unterschied ist womit.</div>
+        <hr>
+        <div class="bh"><span class="btag">Open Loop + CTA</span><span class="btime">32–46 Sek</span></div>
+        <div class="cta"><span class="ol">Wie du in dieses System reinkommst als Europäer — ohne US-Wohnsitz — habe ich aufgeschrieben.</span> Link in der Bio.</div>
+      </div>
+    </div>
+
+    <div class="ad gold-l">
+      <div class="ad-top"><div class="ad-num">TWO PATHS KURZ 02</div><div class="badges"><span class="b b-th">Talking Head</span><span class="b b-a">Bank sagt Nein vs. Ja</span><span class="b b-t">48–58 Sek</span></div></div>
+      <div class="ad-body">
+        <div class="bh"><span class="btag">Hook</span><span class="btime">0–3 Sek</span></div>
+        <div class="hook">Beide wollen skalieren. Einer bekommt Kapital. Der andere nicht. Der Unterschied ist nicht ihr Umsatz.</div>
+        <hr>
+        <div class="vs-block">
+          <div class="vs-de"><div class="vs-who de">🇩🇪 Deutschland</div><div class="vs-t de">Er geht zur Bank. Will Kredit um Werbung vorzufinanzieren. Abgelehnt — keine Kredithistorie. Komm wieder mit zwei Jahren Steuerbescheiden. Er wächst aus dem Cashflow. Langsam.</div></div>
+          <div class="vs-us"><div class="vs-who us">🇺🇸 US-Struktur</div><div class="vs-t us">US-Credit Score ist nach 12 Monaten solide. Sechsstelliges Kreditlimit. Er finanziert Werbung vor — ohne sein Konto zu belasten. Skaliert mit Bankgeld.</div></div>
+        </div>
+        <div class="body-t" style="margin-top:10px;">In Europa bist du als Selbstständiger für die Bank ein Risiko. In den USA bist du ein Unternehmer den das System kennt.</div>
+        <hr>
+        <div class="cta"><span class="ol">Was diese Aufstellung bedeutet und wie der erste Schritt aussieht — steht im Link in der Bio.</span></div>
+      </div>
+    </div>
+
+    <div class="ad gold-l">
+      <div class="ad-top"><div class="ad-num">TWO PATHS KURZ 03</div><div class="badges"><span class="b b-th">Talking Head</span><span class="b b-a">Steuern monatlich</span><span class="b b-t">42–52 Sek</span></div></div>
+      <div class="ad-body">
+        <div class="bh"><span class="btag">Hook</span><span class="btime">0–3 Sek</span></div>
+        <div class="hook">Stell dir vor du verlierst jeden Monat Tausende Euro — nicht durch schlechte Entscheidungen, sondern weil du die richtige noch nicht getroffen hast.</div>
+        <hr>
+        <div class="vs-block">
+          <div class="vs-de"><div class="vs-who de">🇩🇪 Monat für Monat</div><div class="vs-t de">Einkommensteuer. Gewerbesteuer. Sozialabgaben. Ein erheblicher Teil jedes Euros geht sofort wieder weg. Monat für Monat. Jahr für Jahr.</div></div>
+          <div class="vs-us"><div class="vs-who us">🇺🇸 Monat für Monat</div><div class="vs-t us">Eine US-LLC — richtig aufgesetzt — zahlt nach anderen Regeln. Keine Gewerbesteuer. Keine deutschen Sozialabgaben auf den Gewinn. Was bleibt, gehört dem Unternehmer.</div></div>
+        </div>
+        <hr>
+        <div class="cta"><span class="ol">Was das konkret bedeutet und wie die Struktur aussieht — Link in der Bio.</span></div>
+      </div>
+    </div>
+
+    <div class="ad gold-l">
+      <div class="ad-top"><div class="ad-num">TWO PATHS KURZ 04</div><div class="badges"><span class="b b-th">Talking Head</span><span class="b b-a">Nomad — Setup vs. kein Setup</span><span class="b b-t">50–60 Sek</span></div></div>
+      <div class="ad-body">
+        <div class="bh"><span class="btag">Hook</span><span class="btime">0–3 Sek</span></div>
+        <div class="hook">Zwei Digital Nomads. Beide nicht mehr in Deutschland gemeldet. Einer lebt wirklich frei. Der andere wartet noch auf den nächsten Steuerbescheid.</div>
+        <hr>
+        <div class="vs-block">
+          <div class="vs-de"><div class="vs-who de">❌ Nomad ohne Setup</div><div class="vs-t de">Lebt in Bali. Hat sich abgemeldet. Aber sein Business hat keine saubere Struktur. Kein Kredit. Keine funktionierenden Kreditkarten. Jedes Jahr Unsicherheit: Bin ich steuerpflichtig? Wo?</div></div>
+          <div class="vs-us"><div class="vs-who us">✓ Nomad mit US-Setup</div><div class="vs-t us">Selbes Leben — aber klare Struktur. US-LLC. US-Banking. Er weiß was er zahlt und warum. Kreditkarten die überall funktionieren. Echte Freiheit — nicht nur auf dem Papier.</div></div>
+        </div>
+        <hr>
+        <div class="cta"><span class="ol">Welcher dieser Nomads bist du — und wie du die Seite wechselst — habe ich aufgeschrieben.</span> Link in der Bio.</div>
+      </div>
+    </div>
+
+    <div class="ad gold-l">
+      <div class="ad-top"><div class="ad-num">TWO PATHS KURZ 05</div><div class="badges"><span class="b b-th">Talking Head</span><span class="b b-a">Economy vs. Business Class</span><span class="b b-t">38–48 Sek</span><span class="b b-s">Visuell</span></div></div>
+      <div class="ad-body">
+        <div class="bh"><span class="btag">Hook</span><span class="btime">0–3 Sek</span></div>
+        <div class="hook">Gleicher Flug. Gleiche Strecke. Einer sitzt Economy und zahlt. Der andere sitzt Business Class und hat nichts dafür bezahlt.</div>
+        <hr>
+        <div class="body-t">Das ist kein Glück. Das ist kein Reichtum. Das ist ein System das US-Unternehmer kennen — und das für Europäer normalerweise nicht zugänglich ist.<br><br>US-Premiumkreditkarten sammeln Punkte auf jeden Businessausgang. Software. Werbung. Tools. Alles was du sowieso ausgibst — auf der richtigen Karte — wird zu Flugpunkten.<br><br>Du bekommst diese Karten als Europäer nicht. Es sei denn du existierst für amerikanische Banken. Und das geht — ohne US-Wohnsitz.</div>
+        <hr>
+        <div class="cta"><span class="ol">Wie du in dieses System reinkommst — der erste Schritt ist einfacher als du denkst.</span> Link in der Bio.</div>
+        <div class="notes"><div class="nl">Director's Notes</div><div class="ni-list">
+          <div class="ni">Hook mit Boarding Pass oder Karte in der Hand</div>
+          <div class="ni">„Kein Glück. Kein Reichtum." — kurze Pausen dazwischen</div>
+          <div class="ni">„Einfacher als du denkst" — nimmt letzte Hürde vor dem Klick</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARDS & CREDIT -->
+  <div class="section">
+    <div class="sh">Cards & Credit — 4 Skripte</div>
+
+    <div class="ad blue-l">
+      <div class="ad-top"><div class="ad-num">CARDS 01</div><div class="badges"><span class="b b-th">Talking Head</span><span class="b b-a">For Free fliegen</span><span class="b b-t">40–50 Sek</span></div></div>
+      <div class="ad-body">
+        <div class="bh"><span class="btag">Hook</span><span class="btime">0–3 Sek</span></div>
+        <div class="hook">Ich fliege Business Class und zahle dafür meistens nichts. Nicht weil ich reich bin. Weil ich weiß welche Kreditkarten ich benutze.</div>
+        <hr>
+        <div class="body-t">US-Kreditkarten vergeben Punkte in einem System das in Europa nicht existiert.<br><br>Amex Platinum: 5 Punkte auf jeden Dollar für Reisen. Chase Sapphire: doppelte Punkte auf Travel. Willkommensbonus oft 100.000 Punkte — das sind mehrere Business-Class-Flüge.<br><br>Als Europäer bekommst du diese Karten nicht — außer du existierst für amerikanische Banken. Und das geht. Als Europäer. Ohne je in Amerika gelebt zu haben.</div>
+        <hr>
+        <div class="cta"><span class="ol">Wie du das aufbaust und welche Karten du wann beantragst — habe ich genau dokumentiert.</span> Link in der Bio.</div>
+        <div class="notes"><div class="nl">Director's Notes</div><div class="ni-list">
+          <div class="ni">„Nicht weil ich reich bin" — entwaffnet den Neid-Reflex</div>
+          <div class="ni">Kreditkarte prominent in der Hand halten</div>
+          <div class="ni">Zahlen konkret nennen — Spezifität schafft Glauben</div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="ad blue-l">
+      <div class="ad-top"><div class="ad-num">CARDS 02</div><div class="badges"><span class="b b-th">Talking Head</span><span class="b b-a">Was US Cards ermöglichen</span><span class="b b-t">50–60 Sek</span></div></div>
+      <div class="ad-body">
+        <div class="bh"><span class="btag">Hook</span><span class="btime">0–3 Sek</span></div>
+        <div class="hook">Wusstest du was US-Kreditkarten dir als Unternehmer alles ermöglichen? Die meisten Europäer haben keine Ahnung.</div>
+        <hr>
+        <div class="body-t">Lass mich das aufzählen.<br><br>Erstens: Business-Class-Flüge — mit Punkten buchen, nicht kaufen.<br><br>Zweitens: Airport Lounges weltweit — Priority Pass inklusive.<br><br>Drittens: Kreditzugang — dein US-Credit Score öffnet Kreditlinien die in Europa undenkbar wären.<br><br>Viertens: Reise- und Mietwagenversicherungen, Hotelvergünstigungen — alles inklusive.<br><br>Das bekommst du nicht weil du viel Geld hast. Das bekommst du weil du weißt wie du dich aufstellst.</div>
+        <hr>
+        <div class="cta"><span class="ol">Wie du als Europäer in dieses System reinkommst — auch wenn du noch nie in Amerika warst — steht im Link in der Bio.</span></div>
+        <div class="notes"><div class="nl">Director's Notes</div><div class="ni-list">
+          <div class="ni">Finger zählen bei den 4 Punkten — visuell strukturiert</div>
+          <div class="ni">„Nicht weil du viel Geld hast" — wichtige Zeile, betonen</div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="ad blue-l">
+      <div class="ad-top"><div class="ad-num">CARDS 03</div><div class="badges"><span class="b b-th">Talking Head</span><span class="b b-a">Immobilie auf 0% finanziert</span><span class="b b-t">50–60 Sek</span><span class="b b-s">Stärkster Hook</span></div></div>
+      <div class="ad-body">
+        <div class="bh"><span class="btag">Hook</span><span class="btime">0–3 Sek</span></div>
+        <div class="hook">Mit einer Kreditkarte meine erste Immobilie mitfinanziert — auf 0% Zinsen. Und ich lebe nicht mal in Amerika.</div>
+        <hr>
+        <div class="body-t">US-Business-Kreditkarten bieten 0%-Einführungsangebote — 12 bis 18 Monate, keine Zinsen.<br><br>Wer einen guten US-Credit Score hat, bekommt Karten mit Limits im fünf- bis sechsstelligen Bereich. Und kann diese Periode nutzen um Kapital zu bewegen — Anzahlungen, Renovierungen, Bridging — ohne Bankkredit, ohne Zinsen, ohne Sicherheiten.<br><br>Das existiert in Europa nicht. Weil es diese Karten in Europa nicht gibt.<br><br>Ich habe diesen Credit Score mit einer US-Unternehmensstruktur aufgebaut. Als Europäer.</div>
+        <hr>
+        <div class="cta"><span class="ol">Wie du diesen Credit Score aufbaust — und was danach möglich wird — habe ich dokumentiert.</span> Link in der Bio.</div>
+        <div class="notes"><div class="nl">Director's Notes</div><div class="ni-list">
+          <div class="ni">„Ich lebe nicht mal in Amerika" — wichtigster Satz, klar betonen</div>
+          <div class="ni">Seriöse Energie — Financial Education, kein Hype</div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="ad blue-l">
+      <div class="ad-top"><div class="ad-num">CARDS 04</div><div class="badges"><span class="b b-th">Talking Head</span><span class="b b-a">LLC ohne Amex?</span><span class="b b-t">35–44 Sek</span><span class="b b-hot">Hot Audience</span></div></div>
+      <div class="ad-body">
+        <div class="bh"><span class="btag">Hook</span><span class="btime">0–3 Sek</span></div>
+        <div class="hook">Du hast eine US-LLC — aber noch keine amerikanische Kreditkarte? Dann nutzt du nur die Hälfte von dem was möglich ist.</div>
+        <hr>
+        <div class="body-t">Mit einer US-LLC und einer ITIN bist du für amerikanische Banken ein vollwertiger Unternehmer.<br><br>Das bedeutet: Amex Business Platinum. Chase Ink. Capital One Spark. Karten mit echten Reisepunkten, Cashback, und Kreditlimits die in Europa nicht existieren.<br><br>Ich nutze meine US-Karten für jeden Businessausgang und sammle dabei Business-Class-Flüge.</div>
+        <hr>
+        <div class="cta"><span class="ol">Welche Karten, in welcher Reihenfolge, und was du brauchst — habe ich dokumentiert.</span> Link in der Bio.</div>
+        <div class="notes"><div class="nl">Director's Notes</div><div class="ni-list">
+          <div class="ni">Hook ist ein Filter — spricht nur LLC-Inhaber an</div>
+          <div class="ni">Perfekt als Retargeting-Ad für warme Audiences</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETUP & NOMAD -->
+  <div class="section">
+    <div class="sh">Setup, Nomad & Education</div>
+
+    <div class="ad green-l">
+      <div class="ad-top"><div class="ad-num">SETUP 01</div><div class="badges"><span class="b b-th">Talking Head</span><span class="b b-a">HK vs. Dubai vs. US LLC</span><span class="b b-t">60–70 Sek</span></div></div>
+      <div class="ad-body">
+        <div class="bh"><span class="btag">Hook</span><span class="btime">0–3 Sek</span></div>
+        <div class="hook">Hong Kong, Dubai oder US-LLC? Wenn du dir diese Frage stellst — lass mich dir drei Minuten sparen.</div>
+        <hr>
+        <div class="body-t">Ich habe alle drei verglichen.<br><br><strong style="color:var(--gold);">Dubai:</strong> Klingt gut. Aber du brauchst echten Wohnsitz — das kostet. Banking für digitale Businesses schwieriger als erwartet. Sobald du Zeit in Europa verbringst, wird es steuerlich kompliziert.<br><br><strong style="color:var(--gold);">Hong Kong:</strong> War mal die Antwort. Politische Unsicherheit. Hoher Compliance-Aufwand. Banken die internationale Zahlungen einschränken.<br><br><strong style="color:var(--gold);">US-LLC:</strong> Kein Mindestkapital. Keine Präsenz. US-Banking global akzeptiert. Und das Einzige das dir gleichzeitig Zugang zum US-Creditsystem gibt. Credit Score, Kreditkarten, Kapital.<br><br>Das ist der Vorteil den die anderen beiden nicht bieten können.</div>
+        <hr>
+        <div class="cta"><span class="ol">Wie das Setup aussieht, was es kostet, und was du danach hast — Link in der Bio.</span></div>
+        <div class="notes"><div class="nl">Director's Notes</div><div class="ni-list">
+          <div class="ni">„Lass mich dir drei Minuten sparen" — positioniert als Experte</div>
+          <div class="ni">Dubai und HK sachlich abtun — klar aber nicht herablassend</div>
+          <div class="ni">Bei US-LLC: leicht mehr Energie — das ist die Antwort</div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="ad green-l">
+      <div class="ad-top"><div class="ad-num">NOMAD 01</div><div class="badges"><span class="b b-th">Talking Head</span><span class="b b-a">Nicht mehr in DE gemeldet</span><span class="b b-t">50–60 Sek</span></div></div>
+      <div class="ad-body">
+        <div class="bh"><span class="btag">Hook</span><span class="btime">0–3 Sek</span></div>
+        <div class="hook">Du bist Digital Nomad, nicht mehr in Deutschland gemeldet — und weißt trotzdem nicht welches Business-Setup das richtige für dich ist?</div>
+        <hr>
+        <div class="body-t">Das ist die Phase wo die meisten einen Fehler machen. Sie leben frei — aber ihr Business klebt noch an einem System das nicht für sie optimiert ist. Kein sauberes Setup, keine Kredithistorie, keine Kreditkarten die überall funktionieren.<br><br>Eine US-LLC ist für digitale Nomaden die sauberste Lösung die ich kenne. Kein fester Wohnsitz nötig. Du operierst von überall — und hast US-Banking, US-Adresse, und Zugang zum US-Creditsystem.<br><br>Ich pendle zwischen Südamerika, Asien und Europa. Florida LLC. Maximale Flexibilität — ohne graue Zonen, ohne Unsicherheit.</div>
+        <hr>
+        <div class="cta"><span class="ol">Was das Setup beinhaltet, was es kostet, und wie du es umsetzt — habe ich aufgeschrieben.</span> Link in der Bio.</div>
+        <div class="notes"><div class="nl">Director's Notes</div><div class="ni-list">
+          <div class="ni">Draußen drehen — zeigt das Nomaden-Leben</div>
+          <div class="ni">„Graue Zonen, ohne Unsicherheit" — das echte Kaufmotiv</div>
+          <div class="ni">Peer-to-Peer Energie — kein Experte von oben herab</div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="ad purple-l">
+      <div class="ad-top"><div class="ad-num">EDUCATION 01</div><div class="badges"><span class="b b-th">Talking Head</span><span class="b b-a">Warum US besser — 3 Gründe</span><span class="b b-t">55–65 Sek</span></div></div>
+      <div class="ad-body">
+        <div class="bh"><span class="btag">Hook</span><span class="btime">0–3 Sek</span></div>
+        <div class="hook">Das amerikanische System behandelt Unternehmer anders als das europäische. Hier sind die drei konkreten Unterschiede die dich täglich Geld kosten.</div>
+        <hr>
+        <div class="body-t">Erstens: Steuerlast. Deutschland: Einkommensteuer + Gewerbesteuer + Sozialabgaben — oft 40%+. US-LLC: je nach Struktur und Wohnsitz ein Bruchteil davon.<br><br>Zweitens: Kreditsystem. In Europa bist du als Selbstständiger ein Risiko. In Amerika baust du aktiv einen Credit Score auf — Kreditkarten, Business-Kredite, Kapital.<br><br>Drittens: Banking. In Europa kämpfst du mit Stripe-Sperren. In den USA hast du Mercury, Relay — Banking das für digitale Businesses gebaut wurde.<br><br>Drei Unterschiede. Einer davon allein rechtfertigt die Entscheidung.</div>
+        <hr>
+        <div class="cta"><span class="ol">Wie du als Europäer Zugang zu diesem System bekommst — ohne US-Wohnsitz — habe ich aufgeschrieben.</span> Link in der Bio.</div>
+        <div class="notes"><div class="nl">Director's Notes</div><div class="ni-list">
+          <div class="ni">Finger zählen bei den 3 Punkten</div>
+          <div class="ni">„Einer davon allein rechtfertigt die Entscheidung" — starke Schlusszeile</div>
+          <div class="ni">Sachlich und klar — Bildung, keine Werbung</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════ TAB: CHECKLISTE ═══════════════════ -->
+<div class="tab" id="t-check">
+
+  <div class="section">
+    <div class="sh">Reihenfolge morgen</div>
+    <div class="step"><div class="step-n">1</div><div><div class="step-title">Warm-up 10 Min</div><div class="step-body">Hooks laut lesen. Kamera testen. Wasser bereit.</div></div></div>
+    <div class="step"><div class="step-n">2</div><div><div class="step-title">Hook-Only Takes</div><div class="step-body">Jeden Hook 4–5× aufnehmen. Verschiedene Energien.</div></div></div>
+    <div class="step"><div class="step-n">3</div><div><div class="step-title">Two Paths Lang</div><div class="step-body">3 vollständige Takes. Das ist die Haupt-Ad.</div></div></div>
+    <div class="step"><div class="step-n">4</div><div><div class="step-title">Two Paths Kurz ×5</div><div class="step-body">Je 2 Takes. Kurze Pausen dazwischen.</div></div></div>
+    <div class="step"><div class="step-n">5</div><div><div class="step-title">Cards & Credit ×4</div><div class="step-body">Cards 03 (Immobilien) zuerst — stärkster Hook.</div></div></div>
+    <div class="step"><div class="step-n">6</div><div><div class="step-title">Setup & Nomad ×3</div><div class="step-body">Setup 01 (HK/Dubai/USA) zuerst.</div></div></div>
+  </div>
+
+  <div class="section">
+    <div class="sh">Kamera & Technik</div>
+    <div class="cl-card">
+      <div class="cl-title">📷 Setup</div>
+      <ul class="cl-list">
+        <li>Kamera auf Augenhöhe</li>
+        <li>Stabiles Stativ</li>
+        <li>Externes Mic wenn möglich</li>
+        <li>4K oder min. 1080p</li>
+        <li>Genug Speicher für 2+ Stunden</li>
+        <li>Akku voll oder Kabel angeschlossen</li>
+      </ul>
+    </div>
+    <div class="cl-card">
+      <div class="cl-title">💡 Licht & Location</div>
+      <ul class="cl-list">
+        <li>Licht von vorne — Ringlicht oder Fenster</li>
+        <li>Kein Gegenlicht (kein Fenster im Rücken)</li>
+        <li>Clean Background oder Stadtkulisse</li>
+        <li>Nomad-Ads: draußen drehen</li>
+        <li>Seriöse Ads: cleaner Workspace</li>
+        <li>Keine ablenkenden Elemente</li>
+      </ul>
+    </div>
+    <div class="cl-card">
+      <div class="cl-title">👔 Outfit & Props</div>
+      <ul class="cl-list">
+        <li>Smart-casual — seriös aber nahbar</li>
+        <li>Keine auffälligen Logos oder Muster</li>
+        <li>Kreditkarte bereit (Cards-Ads)</li>
+        <li>Boarding Pass für Travel-Ads</li>
+        <li>Mehrere Outfits für verschiedene Ads</li>
+      </ul>
+    </div>
+    <div class="cl-card">
+      <div class="cl-title">🧠 Mental & Energie</div>
+      <ul class="cl-list">
+        <li>Hooks auswendig — kein Ablesen</li>
+        <li>Wasser immer griffbereit</li>
+        <li>Pause nach je 3–4 Ads</li>
+        <li>Nicht auf Perfektion warten</li>
+        <li>Nach Session: alle Takes sichten</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sh">Nach der Aufnahme</div>
+    <div class="launch-box">
+      <div class="launch-col">
+        <div class="launch-title">Schnitt</div>
+        <div class="launch-body">CapCut oder DaVinci. Hook-Take separat gewählt. Cuts bei natürlichen Pausen. <strong>Text-Overlays für Schlüsselbegriffe.</strong> Untertitel immer.</div>
+      </div>
+      <div class="launch-col">
+        <div class="launch-title">Launch-Strategie</div>
+        <div class="launch-body">3–4 Ads in einer CBO-Kampagne. <strong>€20–30/Tag.</strong> Two Paths Lang + TP Kurz 01 + Cards 03 als erstes Set. Nach 5 Tagen Gewinner skalieren.</div>
+      </div>
+      <div class="launch-col">
+        <div class="launch-title">Was du testest</div>
+        <div class="launch-body">Hook-Typ (Kontrast vs. Schock vs. Frage). Länge (lang vs. kurz). Angle (Steuern vs. Cards vs. Setup). <strong>Gewinner weiter testen.</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════ BOTTOM NAV ═══════════════════ -->
+<div class="bottom-nav">
+  <button class="nb active" onclick="show('t-prinzip',this)">
+    <span class="icon">📐</span>Prinzipien
+  </button>
+  <button class="nb" onclick="show('t-delivery',this)">
+    <span class="icon">🎭</span>Delivery
+  </button>
+  <button class="nb" onclick="show('t-twopaths',this)">
+    <span class="icon">⚡</span>Two Paths
+  </button>
+  <button class="nb" onclick="show('t-skripte',this)">
+    <span class="icon">📄</span>Skripte
+  </button>
+  <button class="nb" onclick="show('t-check',this)">
+    <span class="icon">✅</span>Check
+  </button>
+</div>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
